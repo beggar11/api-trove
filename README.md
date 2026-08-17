@@ -145,38 +145,39 @@ and ✅ working-API sections. Local quick run:
 python weekly_report.py --limit 30   # verify only the first 30 entries
 ```
 
-## Web UI
+## Web UI (cloud-hosted)
 
-A Flask + vanilla-JS dashboard (`web/`):
+Two dashboards share the same `trove` core:
+
+**Streamlit app (recommended, free cloud hosting, no credit card needed):**
 
 ```bash
-pip install -r requirements.txt
+streamlit run streamlit_app.py
+# or deploy to Streamlit Community Cloud:
+#   https://share.streamlit.io  ->  New app  ->  this repo  ->  main file: streamlit_app.py
+```
+
+**Flask app (local / Render):**
+
+```bash
 python web/app.py
 # open http://127.0.0.1:5055
 ```
 
-- filter by keyword / category / auth / CORS, then click **✓ Verify live** to probe
-  up to 100 endpoints at once and see status badges (OK / REACHABLE / ERROR / TIMEOUT / DEAD)
-- reads the local `public-apis` clone when present, otherwise fetches the latest README
-  from GitHub (1 h cache, warmed up in a background thread on boot)
-- API endpoints: `GET /api/categories`, `GET /api/apis`, `POST /api/verify`
+Both let you filter by keyword / category / auth / CORS, then **✓ Verify live** to probe
+endpoints concurrently and see status badges (OK / REACHABLE / ERROR / TIMEOUT / DEAD)
+with response time. The README is read from a local `public-apis` clone when present,
+otherwise fetched from GitHub (1 h cache).
 
-## Deploy to Render (free)
+## Deploy options
 
-One-click deployment via [render.yaml](render.yaml) blueprint:
+| Platform | Card needed | Notes |
+|---|---|---|
+| **Streamlit Community Cloud** | ❌ No | 2 clicks from `share.streamlit.io`; sleeps when idle; **recommended** |
+| Render | ✅ Yes (free tier requires card verification) | `render.yaml` blueprint ready; `gunicorn web.app:app --timeout 120` |
+| GitHub Pages | ❌ No | static only — verification degrades to reachable/dead (browser can't read status codes) |
 
-1. sign in at [render.com](https://render.com) with your GitHub account
-2. **New → Blueprint** → select this repository
-3. Render reads `render.yaml` and creates the web service — wait a few minutes
-4. open the generated URL (e.g. `https://api-trove.onrender.com`)
-
-Production start command (already in `render.yaml`):
-
-```bash
-gunicorn web.app:app --timeout 120
-```
-
-Notes:
+Render notes:
 
 - `--timeout 120` matters: verifying 100 endpoints can take ~75 s, well past gunicorn's
   30 s default
