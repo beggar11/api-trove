@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 """api-trove Web UI —— Flask 后端 + 静态前端。
 
-运行:
-    pip install flask requests
-    python web/app.py
-浏览器打开: http://127.0.0.1:5055
+本地开发:
+    pip install -r requirements.txt
+    python web/app.py          # http://127.0.0.1:5055
+
+生产部署（Render，见根目录 render.yaml）:
+    gunicorn web.app:app --timeout 120
+    # Render 会注入 PORT 环境变量；gunicorn 默认绑定 0.0.0.0
 
 接口:
     GET  /                前端页面
@@ -14,6 +17,7 @@
 """
 import os
 import sys
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
@@ -49,6 +53,19 @@ def load_entries():
     entries = parse_readme(text)
     CACHE["entries"], CACHE["fetched"] = entries, time.time()
     return entries
+
+
+def _warmup():
+    """后台预热 README 缓存，避免部署后第一次请求卡在网络拉取上。"""
+    try:
+        load_entries()
+        print("[api-trove] README cache warmed up")
+    except Exception as e:
+        print(f"[api-trove] warmup failed (will retry lazily): {e}")
+
+
+# 进程启动即预热（gunicorn 导入本模块时也会执行）
+threading.Thread(target=_warmup, daemon=True).start()
 
 
 @app.get("/")
@@ -107,6 +124,8 @@ def verify():
 
 
 if __name__ == "__main__":
+    # 仅本地开发用 Flask 开发服务器；生产环境由 gunicorn 启动（见 render.yaml）
     port = int(os.environ.get("PORT", 5055))
-    print(f"api-trove Web UI -> http://127.0.0.1:{port}")
-    app.run(host="127.0.0.1", port=port, debug=False)
+    host = os.environ.get("HOST", "127.0.0.1")
+    print(f"api-trove Web UI -> http://{host}:{port}")
+    app.run(host=host, port=port, debug=False)

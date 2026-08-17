@@ -13,6 +13,11 @@ on:
       - "report.md"
       - "verified.json"
 
+# 同一时间只保留一个运行：新的 push 会取消还在跑的旧验证，避免叠任务
+concurrency:
+  group: weekly-verify
+  cancel-in-progress: true
+
 permissions:
   contents: write
 

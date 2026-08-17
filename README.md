@@ -158,15 +158,38 @@ python web/app.py
 - filter by keyword / category / auth / CORS, then click **✓ Verify live** to probe
   up to 100 endpoints at once and see status badges (OK / REACHABLE / ERROR / TIMEOUT / DEAD)
 - reads the local `public-apis` clone when present, otherwise fetches the latest README
-  from GitHub (1 h cache)
+  from GitHub (1 h cache, warmed up in a background thread on boot)
 - API endpoints: `GET /api/categories`, `GET /api/apis`, `POST /api/verify`
+
+## Deploy to Render (free)
+
+One-click deployment via [render.yaml](render.yaml) blueprint:
+
+1. sign in at [render.com](https://render.com) with your GitHub account
+2. **New → Blueprint** → select this repository
+3. Render reads `render.yaml` and creates the web service — wait a few minutes
+4. open the generated URL (e.g. `https://api-trove.onrender.com`)
+
+Production start command (already in `render.yaml`):
+
+```bash
+gunicorn web.app:app --timeout 120
+```
+
+Notes:
+
+- `--timeout 120` matters: verifying 100 endpoints can take ~75 s, well past gunicorn's
+  30 s default
+- the free instance sleeps after ~15 min idle; the first request after wake takes
+  ~50 s (cold start) — fine for demos, upgrade the plan for always-on
+- `PORT` is injected by Render; locally the app defaults to `127.0.0.1:5055`
 
 ## Roadmap ideas
 
-- [ ] async verifier with `aiohttp` (faster, fewer threads)
+- [x] async verifier with `aiohttp` (faster, fewer threads)
 - [ ] `--health` mode: categorize `apiKey` APIs into "free tier" vs "signup required"
-- [ ] GitHub Action that re-verifies the whole list weekly and files issues for dead links
-- [ ] Web UI: filter + verify from the browser
+- [x] GitHub Action that re-verifies the whole list weekly and commits a report
+- [x] Web UI: filter + verify from the browser
 
 ## License
 

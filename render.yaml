@@ -1,0 +1,19 @@
+# Render Blueprint — 一键部署 api-trove Web UI
+#
+# 用法（免费）:
+#   1. 打开 https://render.com 注册/登录（GitHub 账号即可）
+#   2. Dashboard -> New -> Blueprint -> 连接你的 GitHub 仓库 beggar11/api-trove
+#   3. Render 自动读取本文件并创建服务，稍等几分钟即可访问
+#
+# 注意: 免费实例闲置 15 分钟后会休眠，再次访问首次请求约需 50 秒冷启动。
+services:
+  - type: web
+    name: api-trove
+    runtime: python
+    plan: free
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn web.app:app --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.0"
