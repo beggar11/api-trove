@@ -52,6 +52,22 @@ def main():
         "Entries are community-curated and can go stale — verify before you integrate."
     )
 
+    with st.expander("❓ How to use"):
+        st.markdown(
+            """
+            1. **Filter** in the left sidebar — keyword, category, auth type, CORS.
+               The results table updates instantly (no search button needed).
+            2. Click **✓ Verify live** to actually probe each endpoint over the network.
+               After ~10-60 s you get per-API status badges plus response time in ms.
+            3. Click **open ↗** on any row to jump to that API's documentation.
+            4. Status legend: **OK** 2xx usable · **REACHABLE** 4xx (may need key/params) ·
+               **ERROR** 5xx · **TIMEOUT** · **DEAD** no connection.
+
+            Tip: filter first (e.g. Auth = `No`, CORS = `Yes`) to narrow down to
+            browser-callable APIs, then verify the top candidates.
+            """
+        )
+
     entries = load_entries()
 
     # ---- 侧边栏筛选 ----
