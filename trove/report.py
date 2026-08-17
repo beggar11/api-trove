@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """结果渲染：终端表格 / JSON / Markdown 三种输出。"""
-from scout.verifier import VerifyResult
+from trove.verifier import VerifyResult
 
 
 def _row_for(entry, result):

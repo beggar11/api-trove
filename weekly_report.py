@@ -13,9 +13,9 @@ import sys
 import time
 from pathlib import Path
 
-from scout.parser import parse_readme
-from scout.report import render_json
-from scout.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD, summarize, verify_entries
+from trove.parser import parse_readme
+from trove.report import render_json
+from trove.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD, summarize, verify_entries
 
 STATUS_ORDER = [OK, REACHABLE, ERROR, TIMEOUT, DEAD]
 

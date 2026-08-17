@@ -1,9 +1,9 @@
-# api-scout 🔍
+# api-trove 🔍
 
 Search and **live-verify** free public APIs from the [public-apis](https://github.com/public-apis/public-apis) list.
 
 The public-apis list is a goldmine — but it is community-curated, and entries can be dead,
-deprecated, or behind changed auth policies at any time. **api-scout** lets you filter the
+deprecated, or behind changed auth policies at any time. **api-trove** lets you filter the
 list locally in milliseconds, then *actually probe every candidate over the network* and
 tell you which ones still work, before you waste time integrating a dead endpoint.
 
@@ -107,9 +107,9 @@ Verification details:
 ## Project structure
 
 ```
-api-scout/
+api-trove/
 ├── main.py                  # CLI entry point (argparse)
-├── scout/
+├── trove/
 │   ├── parser.py            # README markdown -> structured ApiEntry list
 │   ├── verifier.py          # concurrent live probing + result taxonomy
 │   └── report.py            # table / JSON / markdown rendering

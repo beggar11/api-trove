@@ -2,7 +2,7 @@
 """解析器的单元测试。测试纯逻辑，不需要网络。"""
 import unittest
 
-from scout.parser import parse_readme
+from trove.parser import parse_readme
 
 SAMPLE = """# Public APIs
 

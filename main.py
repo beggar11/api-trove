@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""api-scout 命令行入口。
+"""api-trove 命令行入口。
 
 Usage examples:
   python main.py --keyword weather --limit 10        # 本地检索（秒回）
@@ -12,10 +12,10 @@ import json
 import sys
 from pathlib import Path
 
-from scout.parser import parse_readme
-from scout.filter import apply as apply_filters
-from scout.verifier import verify_entries, summarize
-from scout.report import render_json, render_markdown, render_table
+from trove.parser import parse_readme
+from trove.filter import apply as apply_filters
+from trove.verifier import verify_entries, summarize
+from trove.report import render_json, render_markdown, render_table
 
 
 def find_source(explicit: str | None) -> Path:
@@ -36,7 +36,7 @@ def main():
         pass
 
     ap = argparse.ArgumentParser(
-        description="api-scout: search and live-verify free public APIs from the public-apis list"
+        description="api-trove: search and live-verify free public APIs from the public-apis list"
     )
     ap.add_argument("--source", help="path to public-apis README.md (auto-detected by default)")
     ap.add_argument("--keyword", help="filter by keyword in name/description")
@@ -73,7 +73,7 @@ def main():
         print(f"Verifying {len(hits)} APIs "
               f"(engine={args.engine}, workers={args.workers}, timeout={args.timeout}s)...")
         if args.engine == "async":
-            from scout.async_verifier import verify_entries_async
+            from trove.async_verifier import verify_entries_async
             results = verify_entries_async(hits, workers=args.workers, timeout=args.timeout)
         else:
             results = verify_entries(hits, workers=args.workers, timeout=args.timeout)

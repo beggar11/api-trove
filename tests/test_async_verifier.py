@@ -3,8 +3,8 @@
 import asyncio
 import unittest
 
-from scout.async_verifier import check_one_async
-from scout.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD
+from trove.async_verifier import check_one_async
+from trove.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD
 
 
 class FakeContent:

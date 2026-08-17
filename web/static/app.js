@@ -1,4 +1,4 @@
-// api-scout frontend: search + live verify, vanilla JS (no build step).
+// api-trove frontend: search + live verify, vanilla JS (no build step).
 const $ = (id) => document.getElementById(id);
 
 let lastHits = []; // most recent search results, used by the verify button

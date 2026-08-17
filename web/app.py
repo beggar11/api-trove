@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""api-scout Web UI —— Flask 后端 + 静态前端。
+"""api-trove Web UI —— Flask 后端 + 静态前端。
 
 运行:
     pip install flask requests
@@ -21,12 +21,12 @@ from pathlib import Path
 import requests as http
 from flask import Flask, jsonify, request, send_from_directory
 
-# 让 web/app.py 能找到上一级的 scout 包
+# 让 web/app.py 能找到上一级的 trove 包
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from scout.filter import apply as apply_filters
-from scout.parser import parse_readme
-from scout.verifier import check_one
+from trove.filter import apply as apply_filters
+from trove.parser import parse_readme
+from trove.verifier import check_one
 
 app = Flask(__name__, static_folder="static", static_url_path="")
 
@@ -108,5 +108,5 @@ def verify():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5055))
-    print(f"api-scout Web UI -> http://127.0.0.1:{port}")
+    print(f"api-trove Web UI -> http://127.0.0.1:{port}")
     app.run(host="127.0.0.1", port=port, debug=False)

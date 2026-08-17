@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """异步验证引擎（aiohttp）：比线程池更快、更省资源。
 
-与 scout/verifier.py 的 check_one 分类规则完全一致（OK / REACHABLE /
+与 trove/verifier.py 的 check_one 分类规则完全一致（OK / REACHABLE /
 ERROR / TIMEOUT / DEAD），只是底层 IO 换成 aiohttp + asyncio.Semaphore
 限流。aiohttp 默认自动解压 gzip/br，且单连接复用（keep-alive）。
 
 用法（由 main.py --engine async 调用）:
-    from scout.async_verifier import verify_entries_async
+    from trove.async_verifier import verify_entries_async
     results = verify_entries_async(entries, workers=16, timeout=6.0)
 """
 import asyncio
@@ -14,9 +14,9 @@ import time
 
 import aiohttp
 
-from scout.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD, VerifyResult
+from trove.verifier import OK, REACHABLE, ERROR, TIMEOUT, DEAD, VerifyResult
 
-USER_AGENT = "api-scout/async/1.0 (learning portfolio project)"
+USER_AGENT = "api-trove/async/1.0 (learning portfolio project)"
 
 
 async def _read_snippet(resp, limit=120):

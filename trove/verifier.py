@@ -19,7 +19,7 @@ import time
 
 import requests
 
-USER_AGENT = "api-scout/1.0 (learning portfolio project)"
+USER_AGENT = "api-trove/1.0 (learning portfolio project)"
 
 OK, REACHABLE, ERROR, TIMEOUT, DEAD = "OK", "REACHABLE", "ERROR", "TIMEOUT", "DEAD"
 

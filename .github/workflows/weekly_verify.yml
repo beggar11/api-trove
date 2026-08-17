@@ -21,7 +21,7 @@ jobs:
     name: "Verify all public APIs"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout api-scout
+      - name: Checkout api-trove
         uses: actions/checkout@v4
 
       - name: Set up Python
