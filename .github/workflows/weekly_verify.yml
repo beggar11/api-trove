@@ -1,0 +1,65 @@
+name: "Weekly API verification"
+
+on:
+  # 每周一 03:00 UTC 自动全量验证
+  schedule:
+    - cron: "0 3 * * 1"
+  # 也支持手动触发（GitHub 页面 Actions -> Run workflow）
+  workflow_dispatch:
+  # push 时也跑，但 report/verified.json 的自动提交不再触发（paths-ignore 防死循环）
+  push:
+    branches: [main]
+    paths-ignore:
+      - "report.md"
+      - "verified.json"
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    name: "Verify all public APIs"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout api-scout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Fetch latest public-apis README
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/public-apis/public-apis/master/README.md \
+            -o public_apis_readme.md
+          wc -l public_apis_readme.md
+
+      - name: Run full verification + generate report
+        run: python weekly_report.py --source public_apis_readme.md
+
+      - name: Show report summary
+        run: head -40 report.md
+
+      - name: Upload report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-report
+          path: |
+            report.md
+            verified.json
+
+      - name: Commit report back to repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f report.md verified.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: weekly API verification report $(date +%F)"
+            git push
+          else
+            echo "No changes to commit"
+          fi

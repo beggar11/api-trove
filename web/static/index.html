@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>api-scout · Search &amp; verify free public APIs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🔍 api-scout</h1>
+    <p>Search and <strong>live-verify</strong> free public APIs from the
+      <a href="https://github.com/public-apis/public-apis" target="_blank" rel="noopener">public-apis</a> list.
+      Entries are community-curated and can go stale — verify before you integrate.</p>
+  </header>
+
+  <section class="controls">
+    <input id="keyword" type="text" placeholder="keyword (e.g. weather, joke, stock)" autocomplete="off">
+    <select id="category" title="Category"><option value="">All categories</option></select>
+    <select id="auth" title="Auth">
+      <option value="">Any auth</option>
+      <option value="no">No auth</option>
+      <option value="apikey">apiKey</option>
+      <option value="oauth">OAuth</option>
+      <option value="x-mashape-key">X-Mashape-Key</option>
+      <option value="user-agent">User-Agent</option>
+    </select>
+    <select id="cors" title="CORS">
+      <option value="">Any CORS</option>
+      <option value="yes">CORS yes</option>
+      <option value="no">CORS no</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <input id="limit" type="number" value="20" min="1" max="500" title="Max results">
+    <button id="search">Search</button>
+    <button id="verify" class="primary">✓ Verify live</button>
+  </section>
+
+  <p id="stats" class="stats"></p>
+  <p id="progress" class="progress hidden">Verifying endpoints… (up to 100 per click, may take a few seconds)</p>
+
+  <table id="results">
+    <thead>
+      <tr>
+        <th>API</th><th>Category</th><th>Auth</th><th>HTTPS</th><th>CORS</th>
+        <th>Status</th><th>ms</th><th>Note</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">
+      <tr><td colspan="8" class="empty">Search to load APIs — then hit “Verify live” to probe them.</td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    Status legend: <b class="ok">OK</b> 2xx usable · <b class="reachable">REACHABLE</b> 4xx (may need key/params)
+    · <b class="error">ERROR</b> 5xx · <b class="timeout">TIMEOUT</b> · <b class="dead">DEAD</b> no connection.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
