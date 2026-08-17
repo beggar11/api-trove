@@ -1,5 +1,9 @@
 # api-trove 🔍
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Streamlit%20Cloud-4f8cff?style=for-the-badge&logo=streamlit)](https://api-trove-ystszgoo4qjjcfpmxo2xzx.streamlit.app/)
+[![Tests](https://img.shields.io/badge/tests-19%20passed-2ecc71?style=for-the-badge)](https://github.com/beggar11/api-trove/actions)
+[![License](https://img.shields.io/badge/license-MIT-9aa0ae?style=for-the-badge)](LICENSE)
+
 Search and **live-verify** free public APIs from the [public-apis](https://github.com/public-apis/public-apis) list.
 
 The public-apis list is a goldmine — but it is community-curated, and entries can be dead,
